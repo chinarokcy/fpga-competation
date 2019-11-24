@@ -1,0 +1,35 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity in_3 is Port (
+    in3 : in std_logic;
+    cs3 : in std_logic;
+    out3 : out std_logic_vector(3 downto 0)
+);
+end in_3;
+
+architecture Behavioral of in_3 is
+
+signal count : std_logic_vector(3 downto 0);
+
+begin
+
+process(in3)
+begin
+    if rising_edge(in3) then
+        count <= count + 1;
+    end if;
+end process;
+
+process(cs3)
+begin
+    if rising_edge(cs3) then
+        count <= "0000";
+    end if;   
+end process;
+
+out3 <= count;
+
+end Behavioral;

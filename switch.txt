@@ -1,0 +1,86 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity switch is
+  Port (
+    s_clk : in std_logic;
+    s_flag : in std_logic;
+    s_in : in std_logic_vector(15 downto 0);
+    s_out : out std_logic_vector(3 downto 0)
+   );
+end switch;
+
+architecture Behavioral of switch is
+
+component s_out1 port(
+    in1 : in STD_LOGIC_VECTOR (3 downto 0);
+    clk1 : in STD_LOGIC;
+    out1 : out STD_LOGIC
+);
+end component;
+
+component s_out2 port(
+    in2 : in STD_LOGIC_VECTOR (3 downto 0);
+    clk2 : in STD_LOGIC;
+    out2 : out STD_LOGIC
+);
+end component;
+
+component s_out3 port(
+    in3 : in STD_LOGIC_VECTOR (3 downto 0);
+    clk3 : in STD_LOGIC;
+    out3 : out STD_LOGIC
+);
+end component;
+
+component s_out4 port(
+    in4 : in STD_LOGIC_VECTOR (3 downto 0);
+    clk4 : in STD_LOGIC;
+    out4 : out STD_LOGIC
+);
+end component;
+
+component BUFFER_2 port(
+    buffer_in : in STD_LOGIC_VECTOR (15 downto 0);
+    flag : in std_logic;
+    buffer_out : out STD_LOGIC_VECTOR (15 downto 0)
+    );
+end component;
+
+signal trans : std_logic_vector(15 downto 0);
+
+begin
+
+U0: BUFFER_2 port map(
+    buffer_in => s_in,
+    flag => s_flag,
+    buffer_out => trans
+);
+
+U1: s_out1 port map(
+    clk1 => s_clk,
+    in1 => trans (3 downto 0),
+    out1 => s_out(0)
+    );
+
+U2: s_out2 port map(
+    clk2 => s_clk,
+    in2 => trans (7 downto 4),
+    out2 => s_out(1)
+    );
+    
+U3: s_out3 port map(
+    clk3 => s_clk,
+    in3 => trans (11 downto 8),
+    out3 => s_out(2)
+    );    
+
+U4: s_out4 port map(
+    clk4 => s_clk,
+    in4 => trans (15 downto 12),
+    out4 => s_out(3)
+    );
+
+end Behavioral;

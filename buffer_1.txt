@@ -1,0 +1,24 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity buffer_1 is Port ( 
+    buffer_in : in STD_LOGIC_VECTOR (15 downto 0);
+    flag : in std_logic;
+    buffer_out : out STD_LOGIC_VECTOR (15 downto 0)
+    );
+end buffer_1;
+
+architecture Behavioral of buffer_1 is
+
+begin
+
+process(flag)
+begin
+    if rising_edge(flag) then
+        buffer_out <= buffer_in;
+    end if;
+end process;
+
+end Behavioral;

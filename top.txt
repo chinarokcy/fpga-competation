@@ -1,0 +1,66 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity top is Port (
+    in1 : in std_logic;
+    in2 : in std_logic;
+    in3 : in std_logic;
+    in4 : in std_logic;
+    clk : in std_logic;
+    clk2: in std_logic;
+    start : in std_logic;
+    reset : in std_logic;
+    result : out std_logic_vector(3 downto 0);
+    count : out std_logic_vector(15 downto 0)
+);
+end top;
+
+architecture Behavioral of top is
+
+component recieve port(
+    r_clk : in std_logic;
+    r_in1 : in std_logic;
+    r_in2 : in std_logic;
+    r_in3 : in std_logic;
+    r_in4 : in std_logic;
+    r_cs : in std_logic;
+    r_flag : in std_logic;
+    r_out : out std_logic_vector(15 downto 0);
+    count : out std_logic_vector(15 downto 0)
+);
+end component;
+
+component switch port(
+    s_clk : in std_logic;
+    s_flag : in std_logic;
+    s_in : in std_logic_vector(15 downto 0);
+    s_out : out std_logic_vector(3 downto 0)
+);
+end component;
+
+signal trans : std_logic_vector(15 downto 0);
+
+begin
+
+U1: recieve port map (
+    r_clk => clk,
+    r_in1 => in1,
+    r_in2 => in2,
+    r_in3 => in3,
+    r_in4 => in4,
+    r_cs => reset,
+    r_flag => start,
+    r_out => trans,
+    count => count
+);
+
+U2: switch port map (
+    s_clk => clk2,
+    s_out => result,
+    s_flag => start,
+    s_in => trans
+);
+
+end Behavioral;

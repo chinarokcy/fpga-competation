@@ -1,0 +1,97 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity recieve is Port (
+    r_clk : in std_logic;
+    r_in1 : in std_logic;
+    r_in2 : in std_logic;
+    r_in3 : in std_logic;
+    r_in4 : in std_logic;
+    r_cs : in std_logic;
+    r_flag : in std_logic;
+    r_out : out std_logic_vector(15 downto 0);
+    count : out std_logic_vector(15 downto 0)
+);
+end recieve;
+
+architecture Behavioral of recieve is
+
+component in_1 port (
+    in1 : in std_logic;
+    cs1 : in std_logic;
+    out1 : out std_logic_vector(3 downto 0)
+);
+end component;
+
+component in_2 port (
+    in2 : in std_logic;
+    cs2 : in std_logic;
+    out2 : out std_logic_vector(3 downto 0)
+);
+end component;
+
+component in_3 port (
+    in3 : in std_logic;
+    cs3 : in std_logic;
+    out3 : out std_logic_vector(3 downto 0)
+);
+end component;
+
+component in_4 port (
+    in4 : in std_logic;
+    cs4 : in std_logic;
+    out4 : out std_logic_vector(3 downto 0)
+);
+end component;
+
+component buffer_1 port (
+    buffer_in : in STD_LOGIC_VECTOR (15 downto 0);
+    flag : in std_logic;
+    buffer_out : out STD_LOGIC_VECTOR (15 downto 0)
+);
+end component;
+
+signal r_out1 : std_logic_vector(3 downto 0);
+signal r_out2 : std_logic_vector(3 downto 0);
+signal r_out3 : std_logic_vector(3 downto 0);
+signal r_out4 : std_logic_vector(3 downto 0);
+signal uout : STD_LOGIC_VECTOR (15 downto 0);
+
+begin
+
+U0: buffer_1 port map(
+    buffer_in => uout,
+    flag => r_flag,
+    buffer_out => r_out
+);
+
+U1: in_1 port map(
+    in1 => r_in1,
+    cs1 => r_cs,
+    out1 => r_out1
+);
+
+U2: in_2 port map(
+    in2 => r_in2,
+    cs2 => r_cs,
+    out2 =>r_out2
+);
+
+U3: in_3 port map(
+    in3 => r_in3,
+    cs3 => r_cs,
+    out3 =>r_out3
+);
+
+U4: in_4 port map(
+    in4 => r_in4,
+    cs4 => r_cs,
+    out4 =>r_out4
+);
+
+uout <= r_out4 & r_out3 & r_out2 & r_out1;
+count <= uout;
+
+end Behavioral;

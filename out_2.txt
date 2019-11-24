@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity s_out2 is
+Port (
+    in2 : in STD_LOGIC_VECTOR (3 downto 0);
+    clk2 : in STD_LOGIC;
+    out2 : out STD_LOGIC
+);
+end s_out2;
+
+architecture Behavioral of s_out2 is
+
+signal count : std_logic_vector(3 downto 0);
+
+begin
+
+process(clk2)
+begin
+    if rising_edge(clk2) then
+        count <= count - 1;
+    end if;
+end process;
+
+process(clk2)
+begin
+    if rising_edge(clk2) then
+        if count = "0000" then
+            out2 <= '0';
+        else out2 <= '1';
+        end if;
+    end if;
+end process;
+
+end Behavioral;
